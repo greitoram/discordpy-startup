@@ -1,0 +1,18 @@
+import discord
+from datetime import datetime, timedelta
+
+client = discord.Client()
+
+@client.event
+async def on_voice_state_update(member, before, after):
+    if member.guild.id == 471279142349045760 and (before.channel != after.channel):
+        now = datetime.utcnow() + timedelta(hours=9)
+        alert_channel = client.get_channel(599217947545829396)
+        if before.channel is None:
+            msg = f'{now:%m/%d-%H:%M} に {member.name} が参加した。古戦場を頑張ろう'
+            await alert_channel.send(msg)
+        elif after.channel is None:
+            msg = f'{now:%m/%d-%H:%M} に {member.name} が退出した。古戦場から逃げるな'
+            await alert_channel.send(msg)
+
+client.run("7fNWXkAQxbssD9JbgSfkp0Ew6DbwgoTF")
